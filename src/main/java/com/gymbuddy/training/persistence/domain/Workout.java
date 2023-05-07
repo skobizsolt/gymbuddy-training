@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +23,8 @@ public class Workout {
     @Id Long workoutId;
     @NotNull Long userId;
     @NotNull String title;
-    @NotNull LocalDateTime registeredOn;
+    @NotNull LocalDate registeredOn;
+    @NotNull LocalDateTime lastModified;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutDifficulty difficulty;
     @Nullable Integer estimatedTimeInMinutes;

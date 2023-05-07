@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutDto {
     String title;
-    LocalDateTime registeredOn;
+    LocalDate registeredOn;
+    LocalDateTime lastModified;
     WorkoutDifficulty difficulty;
     Integer estimatedTimeInMinutes;
 }
