@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutStepDto {
+    Integer stepNumber;
     String stepName;
     String details;
     WorkoutType workoutType;

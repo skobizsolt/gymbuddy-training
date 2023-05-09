@@ -15,14 +15,11 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutStep {
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Long stepId;
+    @EmbeddedId WorkoutStepId workoutStepId;
+    @NotNull Integer stepNumber;
     @NotNull String stepName;
     String details;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutType workoutType;
-    @ManyToOne(targetEntity = Workout.class)
-    @JoinColumn(name = "workout_id")
-    @NotNull Workout workout;
+
 }

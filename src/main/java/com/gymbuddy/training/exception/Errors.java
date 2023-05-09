@@ -9,8 +9,9 @@ import java.util.Arrays;
 @Getter
 public enum Errors {
 
-    WORKOUT_NOT_FOUND(1L, "Workout not found!", HttpStatus.BAD_REQUEST),
-    ENTITY_NOT_FOUND(2L, "Entity not found in DB!", HttpStatus.BAD_REQUEST),
+    ENTITY_NOT_FOUND(1L, "Entity not found in DB!", HttpStatus.BAD_REQUEST),
+    WORKOUT_NOT_FOUND(2L, "Workout not found!", HttpStatus.BAD_REQUEST),
+    WORKOUT_STEP_NOT_FOUND(3L, "Workout step not found!", HttpStatus.BAD_REQUEST),
     UNEXPECTED_ERROR(999L, "Unexpected error occurred!", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final Long errorCode;
