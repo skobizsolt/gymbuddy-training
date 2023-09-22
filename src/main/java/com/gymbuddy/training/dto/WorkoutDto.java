@@ -1,13 +1,13 @@
 package com.gymbuddy.training.dto;
 
 import com.gymbuddy.training.persistence.domain.Workout;
+import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.persistence.domain.WorkoutDifficulty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -17,9 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutDto {
+    Integer workoutId;
     String title;
-    LocalDate registeredOn;
+    LocalDateTime registeredOn;
     LocalDateTime lastModified;
+    WorkoutCategory category;
     WorkoutDifficulty difficulty;
-    Integer estimatedTimeInMinutes;
 }

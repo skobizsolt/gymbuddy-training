@@ -1,6 +1,7 @@
 package com.gymbuddy.training.service;
 
 import com.gymbuddy.training.dto.ChangeWorkoutDto;
+import com.gymbuddy.training.dto.DetailedWorkoutsDto;
 import com.gymbuddy.training.dto.WorkoutDto;
 import com.gymbuddy.training.dto.WorkoutsDto;
 
@@ -30,8 +31,8 @@ public interface WorkoutService {
      * @param userId           ID of the user who creates the workout
      * @return {@link WorkoutDto} instance.
      */
-    WorkoutDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                             final Long userId);
+    DetailedWorkoutsDto createWorkout(final ChangeWorkoutDto creatableWorkout,
+                                      final Long userId);
 
     /**
      * Method for editing an existing workout.

@@ -7,8 +7,8 @@ import lombok.Getter;
  */
 @Getter
 public enum WorkoutType {
-    TIME_BASED("Interval"),
-    REP_BASED("Rep Count");
+    INTERVAL("Interval"),
+    REP("Rep");
 
     final String name;
 

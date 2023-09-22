@@ -1,6 +1,7 @@
 package com.gymbuddy.training.controller;
 
 import com.gymbuddy.training.dto.ChangeWorkoutDto;
+import com.gymbuddy.training.dto.DetailedWorkoutsDto;
 import com.gymbuddy.training.dto.WorkoutDto;
 import com.gymbuddy.training.dto.WorkoutsDto;
 import com.gymbuddy.training.service.WorkoutService;
@@ -55,10 +56,10 @@ public class WorkoutController {
      * @return {@link WorkoutDto} response.
      */
     @PostMapping("/create")
-    public ResponseEntity<WorkoutDto> createWorkout(@RequestBody @Valid final ChangeWorkoutDto creatableWorkout,
-                                                    @RequestParam("userId") @NotNull @Valid final Long userId) {
+    public ResponseEntity<DetailedWorkoutsDto> createWorkout(@RequestBody @Valid final ChangeWorkoutDto creatableWorkout,
+                                                             @RequestParam("userId") @NotNull @Valid final Long userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
-        final WorkoutDto workout = workoutService.createWorkout(creatableWorkout, userId);
+        final DetailedWorkoutsDto workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);
     }
 

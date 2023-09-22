@@ -1,8 +1,10 @@
 package com.gymbuddy.training.service;
 
 import com.gymbuddy.training.dto.ChangeWorkoutDto;
+import com.gymbuddy.training.dto.DetailedWorkoutsDto;
 import com.gymbuddy.training.dto.WorkoutDto;
 import com.gymbuddy.training.dto.WorkoutsDto;
+import com.gymbuddy.training.dto.steps.WorkoutStepDto;
 import com.gymbuddy.training.exception.Errors;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutDataMapper;
@@ -24,6 +26,7 @@ public class DefaultWorkoutService implements WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final WorkoutQueryMapper workoutQueryMapper;
     private final WorkoutDataMapper workoutDataMapper;
+    private final WorkoutStepService workoutStepService;
 
     /**
      * {@inheritDoc}
@@ -48,11 +51,24 @@ public class DefaultWorkoutService implements WorkoutService {
      * {@inheritDoc}
      */
     @Override
-    public WorkoutDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                                    final Long userId) {
+    public DetailedWorkoutsDto createWorkout(final ChangeWorkoutDto creatableWorkout,
+                                             final Long userId) {
         final Workout workoutEntity = workoutDataMapper.toWorkout(creatableWorkout, userId);
         workoutRepository.save(workoutEntity);
-        return workoutDataMapper.toWorkoutDto(workoutEntity);
+
+        final WorkoutDto savedWorkout =
+                workoutDataMapper.toWorkoutDto(workoutEntity);
+        final DetailedWorkoutsDto createdWorkout = DetailedWorkoutsDto.builder().workout(savedWorkout).build();
+
+        if (!creatableWorkout.getSteps().isEmpty()) {
+            List<WorkoutStepDto> steps = creatableWorkout.getSteps()
+                    .stream()
+                    .map(changeWorkoutStepDto ->
+                            workoutStepService.addStep(workoutEntity.getWorkoutId(), changeWorkoutStepDto))
+                    .toList();
+            createdWorkout.setSteps(steps);
+        }
+        return createdWorkout;
     }
 
     /**

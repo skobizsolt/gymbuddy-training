@@ -2,7 +2,6 @@ package com.gymbuddy.training.service;
 
 import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
 import com.gymbuddy.training.dto.steps.WorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepsDto;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutStepsDataMapper;
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
@@ -29,10 +28,9 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     private final WorkoutStepsDataMapper workoutStepsDataMapper;
 
     @Override
-    public WorkoutStepsDto getAllSteps(Long workoutId) {
+    public List<WorkoutStepDto> getAllSteps(final Long workoutId) {
         final List<WorkoutStep> workoutSteps = workoutStepQueryMapper.getAllStepsForWorkout(workoutId);
-        final List<WorkoutStepDto> workoutStepsList = workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
-        return WorkoutStepsDto.builder().steps(workoutStepsList).build();
+        return workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     }
 
     @Override
-    public WorkoutStepDto addStep(Long workoutId, ChangeWorkoutStepDto creatableWorkoutStepDto) {
+    public WorkoutStepDto addStep(final Long workoutId, final ChangeWorkoutStepDto creatableWorkoutStepDto) {
         final Integer stepNumber = getStepCount(workoutId);
         final WorkoutStep workoutStep =
                 workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, stepNumber);
@@ -52,10 +50,8 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
         return workoutStepsDataMapper.toWorkoutStepDto(workoutStep);
     }
 
-
-
     @Override
-    public WorkoutStepDto editStep(Long workoutId, Long stepNumber, ChangeWorkoutStepDto editableWorkoutStepDto) {
+    public WorkoutStepDto editStep(final Long workoutId, final Long stepNumber, final ChangeWorkoutStepDto editableWorkoutStepDto) {
         final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
         log.info("Editing: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
         workoutStepsDataMapper.modifyEntity(workoutStep, editableWorkoutStepDto);

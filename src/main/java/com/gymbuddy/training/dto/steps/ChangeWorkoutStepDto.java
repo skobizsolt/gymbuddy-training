@@ -17,4 +17,5 @@ public class ChangeWorkoutStepDto {
     String stepName;
     String details;
     WorkoutType workoutType;
+    Integer estimatedTime;
 }

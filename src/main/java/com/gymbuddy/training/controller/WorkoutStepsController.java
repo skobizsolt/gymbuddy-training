@@ -2,7 +2,6 @@ package com.gymbuddy.training.controller;
 
 import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
 import com.gymbuddy.training.dto.steps.WorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepsDto;
 import com.gymbuddy.training.service.WorkoutStepService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * REST controller for managing Workouts steps.
@@ -23,9 +24,9 @@ public class WorkoutStepsController {
     private final WorkoutStepService workoutStepService;
 
     @GetMapping
-    public ResponseEntity<WorkoutStepsDto> getAllSteps(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
+    public ResponseEntity<List<WorkoutStepDto>> getAllSteps(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
         log.info("Endpoint::getAllSteps invoked. workoutId: {}", workoutId);
-        final WorkoutStepsDto steps = workoutStepService.getAllSteps(workoutId);
+        final List<WorkoutStepDto> steps = workoutStepService.getAllSteps(workoutId);
         return ResponseEntity.ok(steps);
     }
 

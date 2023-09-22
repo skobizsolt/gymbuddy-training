@@ -5,14 +5,13 @@ import com.gymbuddy.training.dto.WorkoutDto;
 import com.gymbuddy.training.persistence.domain.Workout;
 import org.mapstruct.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * Mapper class for Workout model and Entity methods.
  */
-@Mapper(imports = {LocalDateTime.class, LocalDate.class})
+@Mapper(imports = {LocalDateTime.class, WorkoutStepsDataMapper.class})
 public interface WorkoutDataMapper {
 
     @Named("workoutDto")
@@ -21,7 +20,7 @@ public interface WorkoutDataMapper {
     @IterableMapping(qualifiedByName = "workoutDto")
     List<WorkoutDto> toWorkoutsDto(final List<Workout> workouts);
 
-    @Mapping(target = "registeredOn", expression = "java(LocalDate.now())")
+    @Mapping(target = "registeredOn", expression = "java(LocalDateTime.now())")
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
     Workout toWorkout(final ChangeWorkoutDto creatableWorkout, final Long userId);
 
