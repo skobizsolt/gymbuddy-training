@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Mapper class for Workout model and Entity methods.
  */
-@Mapper(imports = {LocalDateTime.class, WorkoutStepsDataMapper.class})
+@Mapper(imports = LocalDateTime.class)
 public interface WorkoutDataMapper {
 
     @Named("workoutDto")

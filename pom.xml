@@ -143,7 +143,7 @@
 			<plugin>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-maven-plugin</artifactId>
-				<version>0.2</version>
+				<version>1.4</version>
 				<executions>
 					<execution>
 						<phase>integration-test</phase>
@@ -153,9 +153,8 @@
 					</execution>
 				</executions>
 				<configuration>
-					<apiDocsUrl>http://localhost:8080/api-docs</apiDocsUrl>
-					<outputFileName>openapi.yaml</outputFileName>
-					<outputDir>${project.build.directory}</outputDir>
+					<outputFileName>training-api.yaml</outputFileName>
+					<outputDir>${project.build.directory}/docs/api</outputDir>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 /**
  * Entity class that represents the created workout.
  */
@@ -18,12 +20,14 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     Long workoutId;
-    @NotNull Long userId;
+    @NotNull String userId;
     @NotNull String title;
     String description;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutCategory category;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutDifficulty difficulty;
+    LocalDateTime registeredOn;
+    LocalDateTime lastModified;
     @NotNull Integer estimatedTimeInMinutes;
 }
