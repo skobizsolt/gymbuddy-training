@@ -8,12 +8,13 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * DTO class that stores a changeable record from {@link WorkoutStep}.
+ * DTO class that stores a record from {@link WorkoutStep}.
  */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChangeWorkoutStepDto {
+public class WorkoutStepResponse {
+    Integer stepNumber;
     String stepName;
     String details;
     WorkoutType workoutType;

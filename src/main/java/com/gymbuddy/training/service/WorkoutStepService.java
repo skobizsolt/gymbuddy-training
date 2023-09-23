@@ -1,8 +1,8 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
 import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepDto;
+import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
 
 import java.util.List;
 
@@ -10,18 +10,18 @@ import java.util.List;
  * Interface class for Workout steps service.
  */
 public interface WorkoutStepService {
-    List<WorkoutStepDto> getAllSteps(Long workoutId);
+    List<WorkoutStepResponse> getAllSteps(Long workoutId);
 
-    WorkoutStepDto getStep(Long workoutId,
-                           Long stepNumber);
+    WorkoutStepResponse getStep(Long workoutId,
+                                Long stepNumber);
 
-    WorkoutStepDto addStep(Long workoutId,
-                           ChangeWorkoutStepDto creatableWorkoutStepDto);
+    WorkoutStepResponse addStep(Long workoutId,
+                                ChangeWorkoutStepRequest creatableWorkoutStepDto);
 
 
-    WorkoutStepDto editStep(Long workoutId,
-                            Long stepNumber,
-                            ChangeWorkoutStepDto editableWorkoutStepDto);
+    WorkoutStepResponse editStep(Long workoutId,
+                                 Long stepNumber,
+                                 ChangeWorkoutStepRequest editableWorkoutStepDto);
 
     void deleteStep(Long workoutId,
                     Long stepNumber);

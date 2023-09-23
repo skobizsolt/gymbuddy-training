@@ -1,8 +1,8 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
 import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepDto;
+import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutStepsDataMapper;
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
@@ -29,19 +29,19 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     private final WorkoutStepsDataMapper workoutStepsDataMapper;
 
     @Override
-    public List<WorkoutStepDto> getAllSteps(final Long workoutId) {
+    public List<WorkoutStepResponse> getAllSteps(final Long workoutId) {
         final List<WorkoutStep> workoutSteps = workoutStepQueryMapper.getAllStepsForWorkout(workoutId);
         return workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
     }
 
     @Override
-    public WorkoutStepDto getStep(final Long workoutId, final Long stepNumber) {
+    public WorkoutStepResponse getStep(final Long workoutId, final Long stepNumber) {
         final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
         return workoutStepsDataMapper.toWorkoutStepDto(workoutStep);
     }
 
     @Override
-    public WorkoutStepDto addStep(final Long workoutId, final ChangeWorkoutStepDto creatableWorkoutStepDto) {
+    public WorkoutStepResponse addStep(final Long workoutId, final ChangeWorkoutStepRequest creatableWorkoutStepDto) {
         final Integer stepNumber = getStepCount(workoutId);
         final WorkoutStep workoutStep =
                 workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, stepNumber);
@@ -52,7 +52,7 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     }
 
     @Override
-    public WorkoutStepDto editStep(final Long workoutId, final Long stepNumber, final ChangeWorkoutStepDto editableWorkoutStepDto) {
+    public WorkoutStepResponse editStep(final Long workoutId, final Long stepNumber, final ChangeWorkoutStepRequest editableWorkoutStepDto) {
         final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
         log.info("Editing: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
         workoutStepsDataMapper.modifyEntity(workoutStep, editableWorkoutStepDto);
@@ -70,7 +70,7 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
 
     @Override
     public GeneralStepDetailsDto getGeneralStepDetails(final Long workoutId) {
-        final List<WorkoutStepDto> steps = getAllSteps(workoutId);
+        final List<WorkoutStepResponse> steps = getAllSteps(workoutId);
         return GeneralStepDetailsDto.builder()
                 .estimatedTimeInMinutes(calculateEstimatedTime(steps))
                 .totalSteps(steps.size()).build();
@@ -90,8 +90,8 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
         return stepCount + 1;
     }
 
-    private Integer calculateEstimatedTime(List<WorkoutStepDto> steps) {
-        final List<Integer> stepDurations = steps.stream().map(WorkoutStepDto::getEstimatedTime).toList();
+    private Integer calculateEstimatedTime(List<WorkoutStepResponse> steps) {
+        final List<Integer> stepDurations = steps.stream().map(WorkoutStepResponse::getEstimatedTime).toList();
         return stepDurations.isEmpty() ? 0 : stepDurations.stream().reduce(0, Integer::sum) / 60;
     }
 }

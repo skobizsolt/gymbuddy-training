@@ -1,12 +1,12 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.ChangeWorkoutDto;
-import com.gymbuddy.training.dto.DetailedWorkoutsDto;
-import com.gymbuddy.training.dto.WorkoutDto;
-import com.gymbuddy.training.dto.WorkoutsDto;
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.ChangeWorkoutRequest;
+import com.gymbuddy.training.dto.DetailedWorkoutsResponse;
+import com.gymbuddy.training.dto.WorkoutListResponse;
+import com.gymbuddy.training.dto.WorkoutResponse;
+import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
 import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepDto;
+import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
 import com.gymbuddy.training.exception.Errors;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutDataMapper;
@@ -36,23 +36,23 @@ public class DefaultWorkoutService implements WorkoutService {
      * {@inheritDoc}
      */
     @Override
-    public WorkoutsDto getAllWorkouts() {
+    public WorkoutListResponse getAllWorkouts() {
         final List<Workout> workouts = workoutQueryMapper.getAllRecords();
         final List<GeneralStepDetailsDto> generalDetails = workouts
                 .stream()
                 .map(workout -> workoutStepService.getGeneralStepDetails(workout.getWorkoutId()))
                 .toList();
-        final List<WorkoutDto> workoutDtos = workoutDataMapper.toWorkoutsDto(workouts);
-        mapGeneralDetailsToList(workoutDtos, generalDetails);
-        return WorkoutsDto.builder()
-                .workouts(workoutDtos).build();
+        final List<WorkoutResponse> workoutResponses = workoutDataMapper.toWorkoutsDto(workouts);
+        mapGeneralDetailsToList(workoutResponses, generalDetails);
+        return WorkoutListResponse.builder()
+                .workouts(workoutResponses).build();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public WorkoutDto getWorkout(final Long workoutId) {
+    public WorkoutResponse getWorkout(final Long workoutId) {
         final Workout workout = getWorkoutById(workoutId);
         return getWorkoutDto(workout, workoutId);
     }
@@ -61,16 +61,16 @@ public class DefaultWorkoutService implements WorkoutService {
      * {@inheritDoc}
      */
     @Override
-    public DetailedWorkoutsDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                                             final String userId) {
+    public DetailedWorkoutsResponse createWorkout(final ChangeWorkoutRequest creatableWorkout,
+                                                  final String userId) {
         final Workout workoutEntity = workoutDataMapper.toWorkout(creatableWorkout, userId);
 
         workoutRepository.save(workoutEntity);
 
-        final List<WorkoutStepDto> savedSteps = saveSteps(creatableWorkout.getSteps(), workoutEntity.getWorkoutId());
-        final WorkoutDto workoutDto = getWorkoutDto(workoutEntity, workoutEntity.getWorkoutId());
-        return DetailedWorkoutsDto.builder()
-                .workout(workoutDto)
+        final List<WorkoutStepResponse> savedSteps = saveSteps(creatableWorkout.getSteps(), workoutEntity.getWorkoutId());
+        final WorkoutResponse workoutResponse = getWorkoutDto(workoutEntity, workoutEntity.getWorkoutId());
+        return DetailedWorkoutsResponse.builder()
+                .workout(workoutResponse)
                 .steps(savedSteps).build();
     }
 
@@ -78,14 +78,14 @@ public class DefaultWorkoutService implements WorkoutService {
      * {@inheritDoc}
      */
     @Override
-    public WorkoutDto editWorkout(final ChangeWorkoutDto updatableWorkout,
-                                  final Long workoutId) {
+    public WorkoutResponse editWorkout(final ChangeWorkoutRequest updatableWorkout,
+                                       final Long workoutId) {
         final Workout workoutEntity = getWorkoutById(workoutId);
         workoutDataMapper.modifyEntity(workoutEntity, updatableWorkout);
         workoutRepository.save(workoutEntity);
-        final WorkoutDto workoutDto = workoutDataMapper.toWorkoutDto(workoutEntity);
+        final WorkoutResponse workoutResponse = workoutDataMapper.toWorkoutDto(workoutEntity);
         workoutStepService.getGeneralStepDetails(workoutEntity.getWorkoutId());
-        return workoutDto;
+        return workoutResponse;
     }
 
     /**
@@ -107,7 +107,7 @@ public class DefaultWorkoutService implements WorkoutService {
         return new ServiceExpection(Errors.WORKOUT_NOT_FOUND, "id: " + workoutId.toString());
     }
 
-    private List<WorkoutStepDto> saveSteps(List<ChangeWorkoutStepDto> steps, Long workoutId) {
+    private List<WorkoutStepResponse> saveSteps(List<ChangeWorkoutStepRequest> steps, Long workoutId) {
         if (!steps.isEmpty()) {
             return steps
                     .stream()
@@ -119,15 +119,15 @@ public class DefaultWorkoutService implements WorkoutService {
         }
     }
 
-    private WorkoutDto getWorkoutDto(Workout workoutEntity, Long workoutId) {
-        final WorkoutDto workoutDto = workoutDataMapper.toWorkoutDto(workoutEntity);
-        workoutDto.setStepDetails(workoutStepService.getGeneralStepDetails(workoutId));
-        return workoutDto;
+    private WorkoutResponse getWorkoutDto(Workout workoutEntity, Long workoutId) {
+        final WorkoutResponse workoutResponse = workoutDataMapper.toWorkoutDto(workoutEntity);
+        workoutResponse.setStepDetails(workoutStepService.getGeneralStepDetails(workoutId));
+        return workoutResponse;
     }
 
-    private void mapGeneralDetailsToList(List<WorkoutDto> workoutDtos, List<GeneralStepDetailsDto> generalDetails) {
+    private void mapGeneralDetailsToList(List<WorkoutResponse> workoutResponses, List<GeneralStepDetailsDto> generalDetails) {
 
-        IntStream.range(0, workoutDtos.size())
-                .forEach(i -> workoutDtos.get(i).setStepDetails(generalDetails.get(i)));
+        IntStream.range(0, workoutResponses.size())
+                .forEach(i -> workoutResponses.get(i).setStepDetails(generalDetails.get(i)));
     }
 }

@@ -1,7 +1,7 @@
 package com.gymbuddy.training.mapper;
 
-import com.gymbuddy.training.dto.ChangeWorkoutDto;
-import com.gymbuddy.training.dto.WorkoutDto;
+import com.gymbuddy.training.dto.ChangeWorkoutRequest;
+import com.gymbuddy.training.dto.WorkoutResponse;
 import com.gymbuddy.training.persistence.domain.Workout;
 import org.mapstruct.*;
 
@@ -15,15 +15,15 @@ import java.util.List;
 public interface WorkoutDataMapper {
 
     @Named("workoutDto")
-    WorkoutDto toWorkoutDto(final Workout workout);
+    WorkoutResponse toWorkoutDto(final Workout workout);
 
     @IterableMapping(qualifiedByName = "workoutDto")
-    List<WorkoutDto> toWorkoutsDto(final List<Workout> workouts);
+    List<WorkoutResponse> toWorkoutsDto(final List<Workout> workouts);
 
     @Mapping(target = "registeredOn", expression = "java(LocalDateTime.now())")
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
-    Workout toWorkout(final ChangeWorkoutDto creatableWorkout, final String userId);
+    Workout toWorkout(final ChangeWorkoutRequest creatableWorkout, final String userId);
 
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
-    void modifyEntity(@MappingTarget Workout workoutEntity, ChangeWorkoutDto updatableWorkout);
+    void modifyEntity(@MappingTarget Workout workoutEntity, ChangeWorkoutRequest updatableWorkout);
 }

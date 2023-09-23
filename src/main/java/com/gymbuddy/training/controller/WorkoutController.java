@@ -1,9 +1,9 @@
 package com.gymbuddy.training.controller;
 
-import com.gymbuddy.training.dto.ChangeWorkoutDto;
-import com.gymbuddy.training.dto.DetailedWorkoutsDto;
-import com.gymbuddy.training.dto.WorkoutDto;
-import com.gymbuddy.training.dto.WorkoutsDto;
+import com.gymbuddy.training.dto.ChangeWorkoutRequest;
+import com.gymbuddy.training.dto.DetailedWorkoutsResponse;
+import com.gymbuddy.training.dto.WorkoutListResponse;
+import com.gymbuddy.training.dto.WorkoutResponse;
 import com.gymbuddy.training.service.WorkoutService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -26,12 +26,12 @@ public class WorkoutController {
     /**
      * Endpoint for listing all workouts.
      *
-     * @return {@link WorkoutsDto} response.
+     * @return {@link WorkoutListResponse} response.
      */
     @GetMapping
-    public ResponseEntity<WorkoutsDto> getAllWorkouts() {
+    public ResponseEntity<WorkoutListResponse> getAllWorkouts() {
         log.info("Endpoint::getAllWorkouts invoked.");
-        final WorkoutsDto workouts = workoutService.getAllWorkouts();
+        final WorkoutListResponse workouts = workoutService.getAllWorkouts();
         return ResponseEntity.ok(workouts);
     }
 
@@ -39,12 +39,12 @@ public class WorkoutController {
      * Endpoint for GET a workout by ID.
      *
      * @param workoutId ID of the workout
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
     @GetMapping("/{workoutId}")
-    public ResponseEntity<WorkoutDto> getWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
+    public ResponseEntity<WorkoutResponse> getWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
         log.info("Endpoint::getWorkout invoked. workoutId: {}", workoutId);
-        final WorkoutDto workout = workoutService.getWorkout(workoutId);
+        final WorkoutResponse workout = workoutService.getWorkout(workoutId);
         return ResponseEntity.ok(workout);
     }
 
@@ -53,13 +53,13 @@ public class WorkoutController {
      *
      * @param creatableWorkout new workout data
      * @param userId           ID of the user who creates the workout
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
     @PostMapping("/create")
-    public ResponseEntity<DetailedWorkoutsDto> createWorkout(@RequestBody @Valid final ChangeWorkoutDto creatableWorkout,
-                                                             @RequestParam("userId") @NotNull @Valid final String userId) {
+    public ResponseEntity<DetailedWorkoutsResponse> createWorkout(@RequestBody @Valid final ChangeWorkoutRequest creatableWorkout,
+                                                                  @RequestParam("userId") @NotNull @Valid final String userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
-        final DetailedWorkoutsDto workout = workoutService.createWorkout(creatableWorkout, userId);
+        final DetailedWorkoutsResponse workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);
     }
 
@@ -68,13 +68,13 @@ public class WorkoutController {
      *
      * @param workoutId        ID of the workout
      * @param updatableWorkout edited workout data
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
     @PutMapping("/{workoutId}/edit")
-    public ResponseEntity<WorkoutDto> editWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                                  @RequestBody @Valid final ChangeWorkoutDto updatableWorkout) {
+    public ResponseEntity<WorkoutResponse> editWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
+                                                       @RequestBody @Valid final ChangeWorkoutRequest updatableWorkout) {
         log.info("Endpoint::editWorkout invoked. updatableWorkout: {}, workoutId: {}", updatableWorkout, workoutId);
-        final WorkoutDto workout = workoutService.editWorkout(updatableWorkout, workoutId);
+        final WorkoutResponse workout = workoutService.editWorkout(updatableWorkout, workoutId);
         return ResponseEntity.ok(workout);
     }
 

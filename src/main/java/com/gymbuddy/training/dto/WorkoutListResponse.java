@@ -8,11 +8,11 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 /**
- * DTO class that stores a list of {@link WorkoutDto}.
+ * DTO class that stores a list of {@link WorkoutResponse}.
  */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkoutsDto {
-    List<WorkoutDto> workouts;
+public class WorkoutListResponse {
+    List<WorkoutResponse> workouts;
 }
