@@ -1,6 +1,9 @@
 package com.gymbuddy.training.persistence.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,5 +24,5 @@ public class WorkoutStep {
     String details;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutType workoutType;
-
+    @NotNull Integer estimatedTime;
 }

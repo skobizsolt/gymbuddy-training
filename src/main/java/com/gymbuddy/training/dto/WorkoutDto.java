@@ -1,5 +1,6 @@
 package com.gymbuddy.training.dto;
 
+import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
 import com.gymbuddy.training.persistence.domain.Workout;
 import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.persistence.domain.WorkoutDifficulty;
@@ -18,9 +19,12 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutDto {
     Integer workoutId;
+    String userId;
     String title;
+    String description;
     LocalDateTime registeredOn;
     LocalDateTime lastModified;
     WorkoutCategory category;
     WorkoutDifficulty difficulty;
+    GeneralStepDetailsDto stepDetails;
 }

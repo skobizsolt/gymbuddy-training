@@ -29,5 +29,4 @@ public class Workout {
     @NotNull WorkoutDifficulty difficulty;
     LocalDateTime registeredOn;
     LocalDateTime lastModified;
-    @NotNull Integer estimatedTimeInMinutes;
 }

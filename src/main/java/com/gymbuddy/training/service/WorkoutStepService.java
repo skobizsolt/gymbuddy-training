@@ -1,6 +1,7 @@
 package com.gymbuddy.training.service;
 
 import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
 import com.gymbuddy.training.dto.steps.WorkoutStepDto;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface WorkoutStepService {
 
     void deleteStep(Long workoutId,
                     Long stepNumber);
+
+    GeneralStepDetailsDto getGeneralStepDetails(final Long workoutId);
 }

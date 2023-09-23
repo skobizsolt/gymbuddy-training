@@ -1,6 +1,7 @@
 package com.gymbuddy.training.service;
 
 import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
 import com.gymbuddy.training.dto.steps.WorkoutStepDto;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutStepsDataMapper;
@@ -67,6 +68,14 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
         workoutStepsRepository.delete(workoutStep);
     }
 
+    @Override
+    public GeneralStepDetailsDto getGeneralStepDetails(final Long workoutId) {
+        final List<WorkoutStepDto> steps = getAllSteps(workoutId);
+        return GeneralStepDetailsDto.builder()
+                .estimatedTimeInMinutes(calculateEstimatedTime(steps))
+                .totalSteps(steps.size()).build();
+    }
+
     private WorkoutStep getWorkoutStep(final Long workoutId,
                                        final Long stepNumber) {
         return workoutStepQueryMapper.getWorkoutStepByWorkoutIdAndStep(workoutId, stepNumber)
@@ -79,5 +88,10 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
             return 1;
         }
         return stepCount + 1;
+    }
+
+    private Integer calculateEstimatedTime(List<WorkoutStepDto> steps) {
+        final List<Integer> stepDurations = steps.stream().map(WorkoutStepDto::getEstimatedTime).toList();
+        return stepDurations.isEmpty() ? 0 : stepDurations.stream().reduce(0, Integer::sum) / 60;
     }
 }

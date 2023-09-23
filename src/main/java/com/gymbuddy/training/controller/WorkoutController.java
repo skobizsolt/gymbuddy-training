@@ -57,7 +57,7 @@ public class WorkoutController {
      */
     @PostMapping("/create")
     public ResponseEntity<DetailedWorkoutsDto> createWorkout(@RequestBody @Valid final ChangeWorkoutDto creatableWorkout,
-                                                             @RequestParam("userId") @NotNull @Valid final Long userId) {
+                                                             @RequestParam("userId") @NotNull @Valid final String userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
         final DetailedWorkoutsDto workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);

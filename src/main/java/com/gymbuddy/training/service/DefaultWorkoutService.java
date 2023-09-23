@@ -4,6 +4,8 @@ import com.gymbuddy.training.dto.ChangeWorkoutDto;
 import com.gymbuddy.training.dto.DetailedWorkoutsDto;
 import com.gymbuddy.training.dto.WorkoutDto;
 import com.gymbuddy.training.dto.WorkoutsDto;
+import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
+import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
 import com.gymbuddy.training.dto.steps.WorkoutStepDto;
 import com.gymbuddy.training.exception.Errors;
 import com.gymbuddy.training.exception.ServiceExpection;
@@ -14,7 +16,9 @@ import com.gymbuddy.training.persistence.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Default implementation of {@link WorkoutService}.
@@ -34,8 +38,14 @@ public class DefaultWorkoutService implements WorkoutService {
     @Override
     public WorkoutsDto getAllWorkouts() {
         final List<Workout> workouts = workoutQueryMapper.getAllRecords();
+        final List<GeneralStepDetailsDto> generalDetails = workouts
+                .stream()
+                .map(workout -> workoutStepService.getGeneralStepDetails(workout.getWorkoutId()))
+                .toList();
+        final List<WorkoutDto> workoutDtos = workoutDataMapper.toWorkoutsDto(workouts);
+        mapGeneralDetailsToList(workoutDtos, generalDetails);
         return WorkoutsDto.builder()
-                .workouts(workoutDataMapper.toWorkoutsDto(workouts)).build();
+                .workouts(workoutDtos).build();
     }
 
     /**
@@ -44,7 +54,7 @@ public class DefaultWorkoutService implements WorkoutService {
     @Override
     public WorkoutDto getWorkout(final Long workoutId) {
         final Workout workout = getWorkoutById(workoutId);
-        return workoutDataMapper.toWorkoutDto(workout);
+        return getWorkoutDto(workout, workoutId);
     }
 
     /**
@@ -52,23 +62,16 @@ public class DefaultWorkoutService implements WorkoutService {
      */
     @Override
     public DetailedWorkoutsDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                                             final Long userId) {
+                                             final String userId) {
         final Workout workoutEntity = workoutDataMapper.toWorkout(creatableWorkout, userId);
+
         workoutRepository.save(workoutEntity);
 
-        final WorkoutDto savedWorkout =
-                workoutDataMapper.toWorkoutDto(workoutEntity);
-        final DetailedWorkoutsDto createdWorkout = DetailedWorkoutsDto.builder().workout(savedWorkout).build();
-
-        if (!creatableWorkout.getSteps().isEmpty()) {
-            List<WorkoutStepDto> steps = creatableWorkout.getSteps()
-                    .stream()
-                    .map(changeWorkoutStepDto ->
-                            workoutStepService.addStep(workoutEntity.getWorkoutId(), changeWorkoutStepDto))
-                    .toList();
-            createdWorkout.setSteps(steps);
-        }
-        return createdWorkout;
+        final List<WorkoutStepDto> savedSteps = saveSteps(creatableWorkout.getSteps(), workoutEntity.getWorkoutId());
+        final WorkoutDto workoutDto = getWorkoutDto(workoutEntity, workoutEntity.getWorkoutId());
+        return DetailedWorkoutsDto.builder()
+                .workout(workoutDto)
+                .steps(savedSteps).build();
     }
 
     /**
@@ -80,7 +83,9 @@ public class DefaultWorkoutService implements WorkoutService {
         final Workout workoutEntity = getWorkoutById(workoutId);
         workoutDataMapper.modifyEntity(workoutEntity, updatableWorkout);
         workoutRepository.save(workoutEntity);
-        return workoutDataMapper.toWorkoutDto(workoutEntity);
+        final WorkoutDto workoutDto = workoutDataMapper.toWorkoutDto(workoutEntity);
+        workoutStepService.getGeneralStepDetails(workoutEntity.getWorkoutId());
+        return workoutDto;
     }
 
     /**
@@ -100,5 +105,29 @@ public class DefaultWorkoutService implements WorkoutService {
 
     private ServiceExpection getWorkoutNotFoundException(final Long workoutId) {
         return new ServiceExpection(Errors.WORKOUT_NOT_FOUND, "id: " + workoutId.toString());
+    }
+
+    private List<WorkoutStepDto> saveSteps(List<ChangeWorkoutStepDto> steps, Long workoutId) {
+        if (!steps.isEmpty()) {
+            return steps
+                    .stream()
+                    .map(changeWorkoutStepDto ->
+                            workoutStepService.addStep(workoutId, changeWorkoutStepDto))
+                    .toList();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private WorkoutDto getWorkoutDto(Workout workoutEntity, Long workoutId) {
+        final WorkoutDto workoutDto = workoutDataMapper.toWorkoutDto(workoutEntity);
+        workoutDto.setStepDetails(workoutStepService.getGeneralStepDetails(workoutId));
+        return workoutDto;
+    }
+
+    private void mapGeneralDetailsToList(List<WorkoutDto> workoutDtos, List<GeneralStepDetailsDto> generalDetails) {
+
+        IntStream.range(0, workoutDtos.size())
+                .forEach(i -> workoutDtos.get(i).setStepDetails(generalDetails.get(i)));
     }
 }

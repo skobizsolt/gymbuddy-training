@@ -32,7 +32,7 @@ public interface WorkoutService {
      * @return {@link WorkoutDto} instance.
      */
     DetailedWorkoutsDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                                      final Long userId);
+                             final String userId);
 
     /**
      * Method for editing an existing workout.

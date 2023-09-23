@@ -22,7 +22,7 @@ public interface WorkoutDataMapper {
 
     @Mapping(target = "registeredOn", expression = "java(LocalDateTime.now())")
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
-    Workout toWorkout(final ChangeWorkoutDto creatableWorkout, final Long userId);
+    Workout toWorkout(final ChangeWorkoutDto creatableWorkout, final String userId);
 
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
     void modifyEntity(@MappingTarget Workout workoutEntity, ChangeWorkoutDto updatableWorkout);
