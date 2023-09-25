@@ -1,4 +1,4 @@
-package com.gymbuddy.training.model.util;
+package com.gymbuddy.training.persistence.query.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkoutDetailsResponse {
-    Long estimatedTimeInMinutes;
-    Long totalSteps;
+public class GeneralStepDataDto {
+    String estimatedTimeInMinutes;
+    String totalSteps;
 }

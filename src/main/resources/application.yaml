@@ -21,5 +21,10 @@ spring:
     format:
       date-time: iso
 
+mybatis:
+  mapper-locations: "query/queries.xml"
+  configuration:
+    map-underscore-to-camel-case: true
+
 server:
   port: 8080

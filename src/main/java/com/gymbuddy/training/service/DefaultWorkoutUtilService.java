@@ -1,40 +1,24 @@
 package com.gymbuddy.training.service;
 
+import com.gymbuddy.training.mapper.WorkoutUtilDataMapper;
 import com.gymbuddy.training.model.util.WorkoutDetailsResponse;
-import com.gymbuddy.training.persistence.repository.WorkoutStepsRepository;
-import jakarta.persistence.Tuple;
+import com.gymbuddy.training.persistence.query.WorkoutQueryMapper;
+import com.gymbuddy.training.persistence.query.dto.GeneralStepDataDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DefaultWorkoutUtilService implements WorkoutUtilService {
 
-    private final WorkoutStepsRepository workoutStepsRepository;
+    private final WorkoutQueryMapper workoutQueryMapper;
+    private final WorkoutUtilDataMapper workoutUtilDataMapper;
 
 
     @Override
     public WorkoutDetailsResponse getGeneralDetails(final Long workoutId) {
-        Tuple queryResponse = workoutStepsRepository.getGeneralDataByWorkoutId(workoutId);
+        GeneralStepDataDto queryResponse = workoutQueryMapper.getGeneralData(workoutId);
 
-        if (queryResponse == null) {
-            return WorkoutDetailsResponse.builder().build();
-        }
-
-        return WorkoutDetailsResponse
-                .builder()
-                .estimatedTimeInMinutes(
-                        calculateEstimatedTime(
-                                Optional.of((Long) queryResponse.get("estimatedTimeInMinutes".toLowerCase()))
-                                        .orElse(0L)))
-                .totalSteps(Optional.of((Long) queryResponse.get("totalSteps".toLowerCase()))
-                        .orElse(0L))
-                .build();
-    }
-
-    private Long calculateEstimatedTime(Long estimatedTime) {
-        return estimatedTime / 60;
+        return workoutUtilDataMapper.toResponse(queryResponse);
     }
 }

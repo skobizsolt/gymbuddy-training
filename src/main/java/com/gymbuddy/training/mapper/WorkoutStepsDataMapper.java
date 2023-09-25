@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Mapper class for WorkoutStep DTO and Entity methods.
  */
-@Mapper(uses = WorkoutStepId.class)
+@Mapper(componentModel = "spring", uses = WorkoutStepId.class)
 public interface WorkoutStepsDataMapper {
 
     @Named("workoutStepDto")

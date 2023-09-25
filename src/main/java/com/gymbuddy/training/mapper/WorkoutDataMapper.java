@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Mapper class for Workout model and Entity methods.
  */
-@Mapper(imports = LocalDateTime.class)
+@Mapper(componentModel = "spring", imports = LocalDateTime.class)
 public interface WorkoutDataMapper {
 
     @Named("workoutDto")
