@@ -1,6 +1,6 @@
-package com.gymbuddy.training.dto;
+package com.gymbuddy.training.model;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
 import com.gymbuddy.training.persistence.domain.Workout;
 import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.persistence.domain.WorkoutDifficulty;
@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChangeWorkoutRequest {
+public class CreateWorkoutRequest {
     String title;
     String description;
     WorkoutCategory category;

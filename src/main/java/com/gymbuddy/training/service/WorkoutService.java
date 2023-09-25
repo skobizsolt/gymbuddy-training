@@ -1,9 +1,6 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.ChangeWorkoutRequest;
-import com.gymbuddy.training.dto.DetailedWorkoutsResponse;
-import com.gymbuddy.training.dto.WorkoutListResponse;
-import com.gymbuddy.training.dto.WorkoutResponse;
+import com.gymbuddy.training.model.*;
 
 /**
  * Interface class for Workout service.
@@ -31,7 +28,7 @@ public interface WorkoutService {
      * @param userId           ID of the user who creates the workout
      * @return {@link WorkoutResponse} instance.
      */
-    DetailedWorkoutsResponse createWorkout(final ChangeWorkoutRequest creatableWorkout,
+    DetailedWorkoutsResponse createWorkout(final CreateWorkoutRequest creatableWorkout,
                                            final String userId);
 
     /**
@@ -41,7 +38,7 @@ public interface WorkoutService {
      * @param updatableWorkout edited workout data
      * @return {@link WorkoutResponse} instance.
      */
-    WorkoutResponse editWorkout(final ChangeWorkoutRequest updatableWorkout,
+    WorkoutResponse editWorkout(final EditWorkoutRequest updatableWorkout,
                                 final Long workoutId);
 
     /**

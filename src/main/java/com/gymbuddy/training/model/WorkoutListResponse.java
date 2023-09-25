@@ -1,4 +1,4 @@
-package com.gymbuddy.training.dto;
+package com.gymbuddy.training.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;

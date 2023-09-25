@@ -1,6 +1,5 @@
-package com.gymbuddy.training.dto;
+package com.gymbuddy.training.model;
 
-import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
 import com.gymbuddy.training.persistence.domain.Workout;
 import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.persistence.domain.WorkoutDifficulty;
@@ -26,5 +25,4 @@ public class WorkoutResponse {
     LocalDateTime lastModified;
     WorkoutCategory category;
     WorkoutDifficulty difficulty;
-    GeneralStepDetailsDto stepDetails;
 }

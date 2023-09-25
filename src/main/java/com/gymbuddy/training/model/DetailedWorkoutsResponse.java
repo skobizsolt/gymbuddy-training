@@ -1,6 +1,6 @@
-package com.gymbuddy.training.dto;
+package com.gymbuddy.training.model;
 
-import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import lombok.Builder;
 import lombok.Data;
 

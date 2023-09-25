@@ -1,7 +1,7 @@
 package com.gymbuddy.training.controller;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
-import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import com.gymbuddy.training.service.WorkoutStepService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

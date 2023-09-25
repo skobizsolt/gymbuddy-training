@@ -1,12 +1,10 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
-import com.gymbuddy.training.dto.steps.GeneralStepDetailsDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutStepsDataMapper;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
-import com.gymbuddy.training.persistence.query.WorkoutStepQueryMapper;
 import com.gymbuddy.training.persistence.repository.WorkoutStepsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +23,11 @@ import static com.gymbuddy.training.exception.Errors.WORKOUT_STEP_NOT_FOUND;
 public class DefaultWorkoutStepService implements WorkoutStepService {
 
     private final WorkoutStepsRepository workoutStepsRepository;
-    private final WorkoutStepQueryMapper workoutStepQueryMapper;
     private final WorkoutStepsDataMapper workoutStepsDataMapper;
 
     @Override
     public List<WorkoutStepResponse> getAllSteps(final Long workoutId) {
-        final List<WorkoutStep> workoutSteps = workoutStepQueryMapper.getAllStepsForWorkout(workoutId);
+        final List<WorkoutStep> workoutSteps = workoutStepsRepository.findAllByWorkoutId(workoutId);
         return workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
     }
 
@@ -42,7 +39,7 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
 
     @Override
     public WorkoutStepResponse addStep(final Long workoutId, final ChangeWorkoutStepRequest creatableWorkoutStepDto) {
-        final Integer stepNumber = getStepCount(workoutId);
+        final Integer stepNumber = workoutStepsRepository.getNextStepNumber(workoutId).orElse(1);
         final WorkoutStep workoutStep =
                 workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, stepNumber);
         log.info("Creating: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
@@ -68,30 +65,9 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
         workoutStepsRepository.delete(workoutStep);
     }
 
-    @Override
-    public GeneralStepDetailsDto getGeneralStepDetails(final Long workoutId) {
-        final List<WorkoutStepResponse> steps = getAllSteps(workoutId);
-        return GeneralStepDetailsDto.builder()
-                .estimatedTimeInMinutes(calculateEstimatedTime(steps))
-                .totalSteps(steps.size()).build();
-    }
-
     private WorkoutStep getWorkoutStep(final Long workoutId,
                                        final Long stepNumber) {
-        return workoutStepQueryMapper.getWorkoutStepByWorkoutIdAndStep(workoutId, stepNumber)
+        return workoutStepsRepository.findWorkoutStepByWorkoutIdAndStepNumber(workoutId, stepNumber)
                 .orElseThrow(() -> new ServiceExpection(WORKOUT_STEP_NOT_FOUND, "Step: " + stepNumber));
-    }
-
-    private Integer getStepCount(final Long workoutId) {
-        Integer stepCount = workoutStepQueryMapper.getLastStep(workoutId);
-        if (stepCount == null) {
-            return 1;
-        }
-        return stepCount + 1;
-    }
-
-    private Integer calculateEstimatedTime(List<WorkoutStepResponse> steps) {
-        final List<Integer> stepDurations = steps.stream().map(WorkoutStepResponse::getEstimatedTime).toList();
-        return stepDurations.isEmpty() ? 0 : stepDurations.stream().reduce(0, Integer::sum) / 60;
     }
 }

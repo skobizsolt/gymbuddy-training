@@ -1,4 +1,4 @@
-package com.gymbuddy.training.dto.steps;
+package com.gymbuddy.training.model.steps;
 
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
 import com.gymbuddy.training.persistence.domain.WorkoutType;

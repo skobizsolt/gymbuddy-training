@@ -1,7 +1,7 @@
 package com.gymbuddy.training.mapper;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepRequest;
-import com.gymbuddy.training.dto.steps.WorkoutStepResponse;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
 import com.gymbuddy.training.persistence.domain.WorkoutStepId;
 import org.mapstruct.*;
