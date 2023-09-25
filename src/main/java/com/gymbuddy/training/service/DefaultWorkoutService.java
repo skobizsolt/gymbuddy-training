@@ -80,6 +80,8 @@ public class DefaultWorkoutService implements WorkoutService {
     @Override
     public void deleteWorkout(final Long workoutId) {
         final Workout workout = getWorkoutById(workoutId);
+        final List<WorkoutStepResponse> steps = workoutStepService.getAllSteps(workoutId);
+        steps.forEach(step -> workoutStepService.deleteStep(workoutId, Long.valueOf(step.getStepNumber())));
         workoutRepository.delete(workout);
 
     }
