@@ -3,7 +3,10 @@ package com.gymbuddy.training.service;
 import com.gymbuddy.training.exception.Errors;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutDataMapper;
-import com.gymbuddy.training.model.*;
+import com.gymbuddy.training.model.CreateWorkoutRequest;
+import com.gymbuddy.training.model.DetailedWorkoutsResponse;
+import com.gymbuddy.training.model.EditWorkoutRequest;
+import com.gymbuddy.training.model.WorkoutResponse;
 import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
 import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import com.gymbuddy.training.persistence.domain.Workout;
@@ -24,17 +27,6 @@ public class DefaultWorkoutService implements WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final WorkoutDataMapper workoutDataMapper;
     private final WorkoutStepService workoutStepService;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WorkoutListResponse getAllWorkouts() {
-        final List<Workout> workouts = workoutRepository.findAll();
-        final List<WorkoutResponse> workoutResponses = workoutDataMapper.toWorkoutsDto(workouts);
-        return WorkoutListResponse.builder()
-                .workouts(workoutResponses).build();
-    }
 
     /**
      * {@inheritDoc}

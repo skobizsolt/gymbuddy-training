@@ -1,6 +1,7 @@
 package com.gymbuddy.training.controller;
 
 import com.gymbuddy.training.model.*;
+import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.service.WorkoutService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -19,18 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class WorkoutController {
 
     private final WorkoutService workoutService;
-
-    /**
-     * Endpoint for listing all workouts.
-     *
-     * @return {@link WorkoutListResponse} response.
-     */
-    @GetMapping
-    public ResponseEntity<WorkoutListResponse> getAllWorkouts() {
-        log.info("Endpoint::getAllWorkouts invoked.");
-        final WorkoutListResponse workouts = workoutService.getAllWorkouts();
-        return ResponseEntity.ok(workouts);
-    }
 
     /**
      * Endpoint for GET a workout by ID.
@@ -53,8 +42,9 @@ public class WorkoutController {
      * @return {@link WorkoutResponse} response.
      */
     @PostMapping("/create")
-    public ResponseEntity<DetailedWorkoutsResponse> createWorkout(@RequestBody @Valid final CreateWorkoutRequest creatableWorkout,
-                                                                  @RequestParam("userId") @NotNull @Valid final String userId) {
+    public ResponseEntity<DetailedWorkoutsResponse> createWorkout(
+            @RequestBody @Valid final CreateWorkoutRequest creatableWorkout,
+            @RequestParam("userId") @NotNull @Valid final String userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
         final DetailedWorkoutsResponse workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);
