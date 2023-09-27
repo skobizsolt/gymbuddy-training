@@ -25,26 +25,15 @@ public class WorkoutListController {
     /**
      * Endpoint for listing all workouts.
      *
-     * @return {@link WorkoutListResponse} response.
-     */
-    @GetMapping
-    public ResponseEntity<WorkoutListResponse> getAllWorkouts() {
-        log.info("Endpoint::getAllWorkouts invoked.");
-        final WorkoutListResponse workouts = workoutListService.getAllWorkouts();
-        return ResponseEntity.ok(workouts);
-    }
-
-    /**
-     * Endpoint for listing all workouts.
-     *
      * @param category {@link WorkoutCategory}
      * @return {@link WorkoutListResponse} response.
      */
-    @GetMapping(name = "getWorkoutsByCategory", params = {"category"})
-    public ResponseEntity<WorkoutListResponse> getWorkoutsByCategory(
-            @RequestParam(value = "category") final WorkoutCategory category) {
-        log.info("Endpoint::getWorkoutsByCategory invoked. Category: {}", category);
-        final WorkoutListResponse workouts = workoutListService.getAllWorkoutsByCategory(category);
+    @GetMapping
+    public ResponseEntity<WorkoutListResponse> getAllWorkouts(
+            @RequestParam(value = "category", required = false) final WorkoutCategory category
+    ) {
+        log.info("Endpoint::getAllWorkouts invoked.");
+        final WorkoutListResponse workouts = workoutListService.getAllWorkouts(category);
         return ResponseEntity.ok(workouts);
     }
 
@@ -54,7 +43,7 @@ public class WorkoutListController {
      * @param userId user identifier
      * @return {@link WorkoutListResponse} response.
      */
-    @GetMapping(name = "getWorkoutsByUserId", params = {"userId"})
+    @GetMapping("owned")
     public ResponseEntity<WorkoutListResponse> getWorkoutsByUserId(
             @RequestParam(value = "userId") final String userId) {
         log.info("Endpoint::getWorkoutsByUserId invoked. UserId: {}", userId);

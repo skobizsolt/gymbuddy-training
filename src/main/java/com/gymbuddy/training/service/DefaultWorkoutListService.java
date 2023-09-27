@@ -25,17 +25,11 @@ public class DefaultWorkoutListService implements WorkoutListService {
      * {@inheritDoc}
      */
     @Override
-    public WorkoutListResponse getAllWorkouts() {
+    public WorkoutListResponse getAllWorkouts(final WorkoutCategory category) {
+        if (category != null) {
+            return getAllWorkoutsByCategory(category);
+        }
         final List<Workout> workouts = workoutRepository.findAll();
-        return getWorkoutListResponse(workouts);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WorkoutListResponse getAllWorkoutsByCategory(final WorkoutCategory category) {
-        final List<Workout> workouts = workoutRepository.findAllByCategory(category);
         return getWorkoutListResponse(workouts);
     }
 
@@ -45,6 +39,11 @@ public class DefaultWorkoutListService implements WorkoutListService {
     @Override
     public WorkoutListResponse getAllWorkoutsByUserId(final String userId) {
         final List<Workout> workouts = workoutRepository.findAllByUserId(userId);
+        return getWorkoutListResponse(workouts);
+    }
+
+    private WorkoutListResponse getAllWorkoutsByCategory(final WorkoutCategory category) {
+        final List<Workout> workouts = workoutRepository.findAllByCategory(category);
         return getWorkoutListResponse(workouts);
     }
 
