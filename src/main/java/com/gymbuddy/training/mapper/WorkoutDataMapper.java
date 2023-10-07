@@ -1,7 +1,6 @@
 package com.gymbuddy.training.mapper;
 
-import com.gymbuddy.training.model.CreateWorkoutRequest;
-import com.gymbuddy.training.model.EditWorkoutRequest;
+import com.gymbuddy.training.model.ChangeWorkoutRequest;
 import com.gymbuddy.training.model.WorkoutResponse;
 import com.gymbuddy.training.persistence.domain.Workout;
 import org.mapstruct.*;
@@ -23,8 +22,8 @@ public interface WorkoutDataMapper {
 
     @Mapping(target = "registeredOn", expression = "java(LocalDateTime.now())")
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
-    Workout toWorkout(final CreateWorkoutRequest creatableWorkout, final String userId);
+    Workout toWorkout(final ChangeWorkoutRequest creatableWorkout, final String userId);
 
     @Mapping(target = "lastModified", expression = "java(LocalDateTime.now())")
-    void modifyEntity(@MappingTarget Workout workoutEntity, EditWorkoutRequest updatableWorkout);
+    void modifyEntity(@MappingTarget Workout workoutEntity, ChangeWorkoutRequest updatableWorkout);
 }

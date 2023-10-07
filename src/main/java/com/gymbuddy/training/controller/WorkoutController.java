@@ -1,7 +1,7 @@
 package com.gymbuddy.training.controller;
 
-import com.gymbuddy.training.model.*;
-import com.gymbuddy.training.persistence.domain.WorkoutCategory;
+import com.gymbuddy.training.model.ChangeWorkoutRequest;
+import com.gymbuddy.training.model.WorkoutResponse;
 import com.gymbuddy.training.service.WorkoutService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -42,11 +42,11 @@ public class WorkoutController {
      * @return {@link WorkoutResponse} response.
      */
     @PostMapping
-    public ResponseEntity<DetailedWorkoutsResponse> createWorkout(
-            @RequestBody @Valid final CreateWorkoutRequest creatableWorkout,
+    public ResponseEntity<WorkoutResponse> createWorkout(
+            @RequestBody @Valid final ChangeWorkoutRequest creatableWorkout,
             @RequestParam("userId") @NotNull @Valid final String userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
-        final DetailedWorkoutsResponse workout = workoutService.createWorkout(creatableWorkout, userId);
+        final WorkoutResponse workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);
     }
 
@@ -59,7 +59,7 @@ public class WorkoutController {
      */
     @PutMapping("/{workoutId}")
     public ResponseEntity<WorkoutResponse> editWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                                       @RequestBody @Valid final EditWorkoutRequest updatableWorkout) {
+                                                       @RequestBody @Valid final ChangeWorkoutRequest updatableWorkout) {
         log.info("Endpoint::editWorkout invoked. updatableWorkout: {}, workoutId: {}", updatableWorkout, workoutId);
         final WorkoutResponse workout = workoutService.editWorkout(updatableWorkout, workoutId);
         return ResponseEntity.ok(workout);

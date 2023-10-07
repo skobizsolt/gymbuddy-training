@@ -1,8 +1,6 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.model.CreateWorkoutRequest;
-import com.gymbuddy.training.model.DetailedWorkoutsResponse;
-import com.gymbuddy.training.model.EditWorkoutRequest;
+import com.gymbuddy.training.model.ChangeWorkoutRequest;
 import com.gymbuddy.training.model.WorkoutResponse;
 
 /**
@@ -25,8 +23,8 @@ public interface WorkoutService {
      * @param userId           ID of the user who creates the workout
      * @return {@link WorkoutResponse} instance.
      */
-    DetailedWorkoutsResponse createWorkout(CreateWorkoutRequest creatableWorkout,
-                                           String userId);
+    WorkoutResponse createWorkout(ChangeWorkoutRequest creatableWorkout,
+                                  String userId);
 
     /**
      * Method for editing an existing workout.
@@ -35,7 +33,7 @@ public interface WorkoutService {
      * @param updatableWorkout edited workout data
      * @return {@link WorkoutResponse} instance.
      */
-    WorkoutResponse editWorkout(EditWorkoutRequest updatableWorkout,
+    WorkoutResponse editWorkout(ChangeWorkoutRequest updatableWorkout,
                                 Long workoutId);
 
     /**
