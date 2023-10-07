@@ -38,7 +38,7 @@ public class WorkoutStepsController {
         return ResponseEntity.ok(step);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<WorkoutStepResponse> addStep(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
                                                        @RequestBody @Valid final ChangeWorkoutStepRequest creatableWorkoutStepDto) {
         log.info("Endpoint::newStep invoked. workoutId: {}, creatableWorkoutStepDto: {}", workoutId, creatableWorkoutStepDto);
@@ -46,7 +46,7 @@ public class WorkoutStepsController {
         return ResponseEntity.ok(step);
     }
 
-    @PutMapping("/{stepNumber}/edit")
+    @PutMapping("/{stepNumber}")
     public ResponseEntity<WorkoutStepResponse> editStep(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
                                                         @PathVariable("stepNumber") @NotNull @Valid final Long stepNumber,
                                                         @RequestBody @Valid final ChangeWorkoutStepRequest editableWorkoutStepDto) {
@@ -56,7 +56,7 @@ public class WorkoutStepsController {
         return ResponseEntity.ok(step);
     }
 
-    @DeleteMapping("/{stepNumber}/delete")
+    @DeleteMapping("/{stepNumber}")
     public ResponseEntity<Void> deleteStep(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
                                            @PathVariable("stepNumber") @NotNull @Valid final Long stepNumber) {
         log.info("Endpoint::deleteStep invoked. workoutId: {}, stepId: {}", workoutId, stepNumber);

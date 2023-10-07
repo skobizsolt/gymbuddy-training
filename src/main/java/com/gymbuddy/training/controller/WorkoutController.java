@@ -41,7 +41,7 @@ public class WorkoutController {
      * @param userId           ID of the user who creates the workout
      * @return {@link WorkoutResponse} response.
      */
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<DetailedWorkoutsResponse> createWorkout(
             @RequestBody @Valid final CreateWorkoutRequest creatableWorkout,
             @RequestParam("userId") @NotNull @Valid final String userId) {
@@ -57,7 +57,7 @@ public class WorkoutController {
      * @param updatableWorkout edited workout data
      * @return {@link WorkoutResponse} response.
      */
-    @PutMapping("/{workoutId}/edit")
+    @PutMapping("/{workoutId}")
     public ResponseEntity<WorkoutResponse> editWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
                                                        @RequestBody @Valid final EditWorkoutRequest updatableWorkout) {
         log.info("Endpoint::editWorkout invoked. updatableWorkout: {}, workoutId: {}", updatableWorkout, workoutId);
@@ -71,7 +71,7 @@ public class WorkoutController {
      * @param workoutId ID of the workout
      * @return 200 OK.
      */
-    @DeleteMapping("/{workoutId}/delete")
+    @DeleteMapping("/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
         log.info("Endpoint::deleteWorkout invoked. workoutId: {}", workoutId);
         workoutService.deleteWorkout(workoutId);

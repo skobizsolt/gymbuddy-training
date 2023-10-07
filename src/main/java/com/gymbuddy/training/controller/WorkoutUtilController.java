@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/workouts/data")
+@RequestMapping("/workouts")
 @Slf4j
 @RequiredArgsConstructor
 public class WorkoutUtilController {
