@@ -20,8 +20,6 @@
 		<lombok.version>1.18.24</lombok.version>
 		<openapi.version>2.0.4</openapi.version>
 		<jakarta-validation.version>3.0.2</jakarta-validation.version>
-		<jakarta-servlet.version>6.0.0</jakarta-servlet.version>
-		<querydsl.version>5.0.0</querydsl.version>
 		<maven.surefire.version>3.0.0</maven.surefire.version>
 		<mybatis.version>3.5.13</mybatis.version>
 	</properties>
@@ -57,7 +55,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -89,9 +86,13 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.1</version>
+			<version>3.0.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.gymbuddy</groupId>
+			<artifactId>gymbuddy-auth</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 

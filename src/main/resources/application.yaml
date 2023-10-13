@@ -26,5 +26,10 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+firebase:
+  audience: gymbuddy-b4e20
+  issuer: https://securetoken.google.com/gymbuddy-b4e20
+  public-key-provider: "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+
 server:
   port: 8080
