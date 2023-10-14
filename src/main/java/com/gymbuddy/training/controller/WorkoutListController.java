@@ -2,10 +2,14 @@ package com.gymbuddy.training.controller;
 
 import com.gymbuddy.training.model.WorkoutListResponse;
 import com.gymbuddy.training.service.WorkoutListService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +30,10 @@ public class WorkoutListController {
      * @return {@link WorkoutListResponse} response.
      */
     @GetMapping
-    public ResponseEntity<WorkoutListResponse> getAllWorkouts() {
+    @Operation(summary = "List all existing workouts", security = {@SecurityRequirement(name = "token")})
+    public ResponseEntity<WorkoutListResponse> getAllWorkouts(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken
+    ) {
         log.info("Endpoint::getAllWorkouts invoked.");
         final WorkoutListResponse workouts = workoutListService.getAllWorkouts();
         return ResponseEntity.ok(workouts);
