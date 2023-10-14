@@ -1,4 +1,4 @@
-package com.gymbuddy.training.dto.steps;
+package com.gymbuddy.training.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,11 +8,11 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 /**
- * DTO class that stores a list of {@link WorkoutStepDto}.
+ * DTO class that stores a list of {@link WorkoutResponse}.
  */
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WorkoutStepsDto {
-    List<WorkoutStepDto> steps;
+public class WorkoutListResponse {
+    List<WorkoutResponse> workouts;
 }

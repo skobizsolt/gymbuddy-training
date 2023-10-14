@@ -1,47 +1,40 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.ChangeWorkoutDto;
-import com.gymbuddy.training.dto.WorkoutDto;
-import com.gymbuddy.training.dto.WorkoutsDto;
+import com.gymbuddy.training.model.ChangeWorkoutRequest;
+import com.gymbuddy.training.model.WorkoutResponse;
 
 /**
  * Interface class for Workout service.
  */
 public interface WorkoutService {
-    /**
-     * Method for getting all workouts.
-     *
-     * @return {@link WorkoutsDto} instance.
-     */
-    WorkoutsDto getAllWorkouts();
 
     /**
      * Method for getting a workout.
      *
      * @param workoutId ID of the workout
-     * @return {@link WorkoutDto} instance.
+     * @return {@link WorkoutResponse} instance.
      */
-    WorkoutDto getWorkout(final Long workoutId);
+    WorkoutResponse getWorkout(Long workoutId);
 
     /**
      * Method for creating a workout.
      *
      * @param creatableWorkout new workout data
      * @param userId           ID of the user who creates the workout
-     * @return {@link WorkoutDto} instance.
+     * @return {@link WorkoutResponse} instance.
      */
-    WorkoutDto createWorkout(final ChangeWorkoutDto creatableWorkout,
-                             final Long userId);
+    WorkoutResponse createWorkout(ChangeWorkoutRequest creatableWorkout,
+                                  String userId);
 
     /**
      * Method for editing an existing workout.
      *
      * @param workoutId        ID of the workout
      * @param updatableWorkout edited workout data
-     * @return {@link WorkoutDto} instance.
+     * @return {@link WorkoutResponse} instance.
      */
-    WorkoutDto editWorkout(final ChangeWorkoutDto updatableWorkout,
-                           final Long workoutId);
+    WorkoutResponse editWorkout(ChangeWorkoutRequest updatableWorkout,
+                                Long workoutId);
 
     /**
      * Endpoint for deleting a workout.

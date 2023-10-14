@@ -1,0 +1,10 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gymbuddy.training.persistence.query.WorkoutQueryMapper">
+    <select id="getGeneralData" resultType="com.gymbuddy.training.persistence.query.dto.GeneralStepDataDto">
+        SELECT COUNT(workout_id) as totalSteps,
+         SUM(estimated_time) / 60 as estimatedTimeInMinutes
+         FROM workout_step s
+         WHERE s.workout_id = #{workoutId}
+    </select>
+</mapper>

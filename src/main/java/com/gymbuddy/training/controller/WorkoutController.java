@@ -1,13 +1,15 @@
 package com.gymbuddy.training.controller;
 
-import com.gymbuddy.training.dto.ChangeWorkoutDto;
-import com.gymbuddy.training.dto.WorkoutDto;
-import com.gymbuddy.training.dto.WorkoutsDto;
+import com.gymbuddy.training.model.ChangeWorkoutRequest;
+import com.gymbuddy.training.model.WorkoutResponse;
 import com.gymbuddy.training.service.WorkoutService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,27 +25,18 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     /**
-     * Endpoint for listing all workouts.
-     *
-     * @return {@link WorkoutsDto} response.
-     */
-    @GetMapping
-    public ResponseEntity<WorkoutsDto> getAllWorkouts() {
-        log.info("Endpoint::getAllWorkouts invoked.");
-        final WorkoutsDto workouts = workoutService.getAllWorkouts();
-        return ResponseEntity.ok(workouts);
-    }
-
-    /**
      * Endpoint for GET a workout by ID.
      *
      * @param workoutId ID of the workout
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
     @GetMapping("/{workoutId}")
-    public ResponseEntity<WorkoutDto> getWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
+    @Operation(summary = "Gets a workout by it's id", security = {@SecurityRequirement(name = "token")})
+    public ResponseEntity<WorkoutResponse> getWorkout(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                                      @PathVariable("workoutId") @NotNull @Valid final Long workoutId
+    ) {
         log.info("Endpoint::getWorkout invoked. workoutId: {}", workoutId);
-        final WorkoutDto workout = workoutService.getWorkout(workoutId);
+        final WorkoutResponse workout = workoutService.getWorkout(workoutId);
         return ResponseEntity.ok(workout);
     }
 
@@ -52,13 +45,16 @@ public class WorkoutController {
      *
      * @param creatableWorkout new workout data
      * @param userId           ID of the user who creates the workout
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
-    @PostMapping("/create")
-    public ResponseEntity<WorkoutDto> createWorkout(@RequestBody @Valid final ChangeWorkoutDto creatableWorkout,
-                                                    @RequestParam("userId") @NotNull @Valid final Long userId) {
+    @PostMapping
+    @Operation(summary = "Creates a new workout", security = {@SecurityRequirement(name = "token")})
+    public ResponseEntity<WorkoutResponse> createWorkout(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+            @RequestBody @Valid final ChangeWorkoutRequest creatableWorkout,
+            @RequestParam("userId") @NotNull @Valid final String userId) {
         log.info("Endpoint::createWorkout invoked. creatableWorkout: {}, userId: {}", creatableWorkout, userId);
-        final WorkoutDto workout = workoutService.createWorkout(creatableWorkout, userId);
+        final WorkoutResponse workout = workoutService.createWorkout(creatableWorkout, userId);
         return ResponseEntity.ok(workout);
     }
 
@@ -67,13 +63,15 @@ public class WorkoutController {
      *
      * @param workoutId        ID of the workout
      * @param updatableWorkout edited workout data
-     * @return {@link WorkoutDto} response.
+     * @return {@link WorkoutResponse} response.
      */
-    @PutMapping("/{workoutId}/edit")
-    public ResponseEntity<WorkoutDto> editWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                                  @RequestBody @Valid final ChangeWorkoutDto updatableWorkout) {
+    @PutMapping("/{workoutId}")
+    @Operation(summary = "Edits an existing workout", security = {@SecurityRequirement(name = "token")})
+    public ResponseEntity<WorkoutResponse> editWorkout(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                                       @PathVariable("workoutId") @NotNull @Valid final Long workoutId,
+                                                       @RequestBody @Valid final ChangeWorkoutRequest updatableWorkout) {
         log.info("Endpoint::editWorkout invoked. updatableWorkout: {}, workoutId: {}", updatableWorkout, workoutId);
-        final WorkoutDto workout = workoutService.editWorkout(updatableWorkout, workoutId);
+        final WorkoutResponse workout = workoutService.editWorkout(updatableWorkout, workoutId);
         return ResponseEntity.ok(workout);
     }
 
@@ -83,8 +81,10 @@ public class WorkoutController {
      * @param workoutId ID of the workout
      * @return 200 OK.
      */
-    @DeleteMapping("/{workoutId}/delete")
-    public ResponseEntity<Void> deleteWorkout(@PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
+    @DeleteMapping("/{workoutId}")
+    @Operation(summary = "Deletes the selected workout", security = {@SecurityRequirement(name = "token")})
+    public ResponseEntity<Void> deleteWorkout(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
+                                              @PathVariable("workoutId") @NotNull @Valid final Long workoutId) {
         log.info("Endpoint::deleteWorkout invoked. workoutId: {}", workoutId);
         workoutService.deleteWorkout(workoutId);
         return ResponseEntity.ok().build();

@@ -1,25 +1,27 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepsDto;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
+
+import java.util.List;
 
 /**
  * Interface class for Workout steps service.
  */
 public interface WorkoutStepService {
-    WorkoutStepsDto getAllSteps(final Long workoutId);
+    List<WorkoutStepResponse> getAllSteps(Long workoutId);
 
-    WorkoutStepDto getStep(final Long workoutId,
-                           final Long stepNumber);
+    WorkoutStepResponse getStep(Long workoutId,
+                                Long stepNumber);
 
-    WorkoutStepDto addStep(final Long workoutId,
-                           final ChangeWorkoutStepDto creatableWorkoutStepDto);
+    WorkoutStepResponse addStep(Long workoutId,
+                                ChangeWorkoutStepRequest creatableWorkoutStepDto);
 
-    WorkoutStepDto editStep(final Long workoutId,
-                            final Long stepNumber,
-                            final ChangeWorkoutStepDto editableWorkoutStepDto);
 
-    void deleteStep(final Long workoutId,
-                    final Long stepNumber);
+    WorkoutStepResponse editStep(Long workoutId,
+                                 Long stepNumber,
+                                 ChangeWorkoutStepRequest editableWorkoutStepDto);
+
+    void deleteStep(Long workoutId,
+                    Long stepNumber);
 }

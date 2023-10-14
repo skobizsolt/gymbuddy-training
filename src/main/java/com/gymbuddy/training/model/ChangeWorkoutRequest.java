@@ -1,6 +1,7 @@
-package com.gymbuddy.training.dto;
+package com.gymbuddy.training.model;
 
 import com.gymbuddy.training.persistence.domain.Workout;
+import com.gymbuddy.training.persistence.domain.WorkoutCategory;
 import com.gymbuddy.training.persistence.domain.WorkoutDifficulty;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,8 +14,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChangeWorkoutDto {
+public class ChangeWorkoutRequest {
     String title;
+    String description;
+    WorkoutCategory category;
     WorkoutDifficulty difficulty;
-    Integer estimatedTimeInMinutes;
 }

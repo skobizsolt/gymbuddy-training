@@ -1,12 +1,10 @@
 package com.gymbuddy.training.service;
 
-import com.gymbuddy.training.dto.steps.ChangeWorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepDto;
-import com.gymbuddy.training.dto.steps.WorkoutStepsDto;
 import com.gymbuddy.training.exception.ServiceExpection;
 import com.gymbuddy.training.mapper.WorkoutStepsDataMapper;
+import com.gymbuddy.training.model.steps.ChangeWorkoutStepRequest;
+import com.gymbuddy.training.model.steps.WorkoutStepResponse;
 import com.gymbuddy.training.persistence.domain.WorkoutStep;
-import com.gymbuddy.training.persistence.query.WorkoutStepQueryMapper;
 import com.gymbuddy.training.persistence.repository.WorkoutStepsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,25 +23,23 @@ import static com.gymbuddy.training.exception.Errors.WORKOUT_STEP_NOT_FOUND;
 public class DefaultWorkoutStepService implements WorkoutStepService {
 
     private final WorkoutStepsRepository workoutStepsRepository;
-    private final WorkoutStepQueryMapper workoutStepQueryMapper;
     private final WorkoutStepsDataMapper workoutStepsDataMapper;
 
     @Override
-    public WorkoutStepsDto getAllSteps(Long workoutId) {
-        final List<WorkoutStep> workoutSteps = workoutStepQueryMapper.getAllStepsForWorkout(workoutId);
-        final List<WorkoutStepDto> workoutStepsList = workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
-        return WorkoutStepsDto.builder().steps(workoutStepsList).build();
+    public List<WorkoutStepResponse> getAllSteps(final Long workoutId) {
+        final List<WorkoutStep> workoutSteps = workoutStepsRepository.findAllByWorkoutId(workoutId);
+        return workoutStepsDataMapper.toWorkoutsDto(workoutSteps);
     }
 
     @Override
-    public WorkoutStepDto getStep(final Long workoutId, final Long stepNumber) {
+    public WorkoutStepResponse getStep(final Long workoutId, final Long stepNumber) {
         final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
         return workoutStepsDataMapper.toWorkoutStepDto(workoutStep);
     }
 
     @Override
-    public WorkoutStepDto addStep(Long workoutId, ChangeWorkoutStepDto creatableWorkoutStepDto) {
-        final Integer stepNumber = getStepCount(workoutId);
+    public WorkoutStepResponse addStep(final Long workoutId, final ChangeWorkoutStepRequest creatableWorkoutStepDto) {
+        final Integer stepNumber = workoutStepsRepository.getNextStepNumber(workoutId).orElse(1);
         final WorkoutStep workoutStep =
                 workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, stepNumber);
         log.info("Creating: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
@@ -52,10 +48,8 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
         return workoutStepsDataMapper.toWorkoutStepDto(workoutStep);
     }
 
-
-
     @Override
-    public WorkoutStepDto editStep(Long workoutId, Long stepNumber, ChangeWorkoutStepDto editableWorkoutStepDto) {
+    public WorkoutStepResponse editStep(final Long workoutId, final Long stepNumber, final ChangeWorkoutStepRequest editableWorkoutStepDto) {
         final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
         log.info("Editing: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
         workoutStepsDataMapper.modifyEntity(workoutStep, editableWorkoutStepDto);
@@ -73,15 +67,7 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
 
     private WorkoutStep getWorkoutStep(final Long workoutId,
                                        final Long stepNumber) {
-        return workoutStepQueryMapper.getWorkoutStepByWorkoutIdAndStep(workoutId, stepNumber)
+        return workoutStepsRepository.findWorkoutStepByWorkoutIdAndStepNumber(workoutId, stepNumber)
                 .orElseThrow(() -> new ServiceExpection(WORKOUT_STEP_NOT_FOUND, "Step: " + stepNumber));
-    }
-
-    private Integer getStepCount(final Long workoutId) {
-        Integer stepCount = workoutStepQueryMapper.getLastStep(workoutId);
-        if (stepCount == null) {
-            return 1;
-        }
-        return stepCount + 1;
     }
 }

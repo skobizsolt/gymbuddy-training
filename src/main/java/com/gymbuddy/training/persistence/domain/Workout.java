@@ -1,6 +1,5 @@
 package com.gymbuddy.training.persistence.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -20,12 +18,15 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Workout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id Long workoutId;
-    @NotNull Long userId;
+    @Id
+    Long workoutId;
+    @NotNull String userId;
     @NotNull String title;
-    @NotNull LocalDate registeredOn;
-    @NotNull LocalDateTime lastModified;
+    String description;
+    @Enumerated(value = EnumType.STRING)
+    @NotNull WorkoutCategory category;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutDifficulty difficulty;
-    @Nullable Integer estimatedTimeInMinutes;
+    LocalDateTime registeredOn;
+    LocalDateTime lastModified;
 }

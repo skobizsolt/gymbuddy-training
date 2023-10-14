@@ -10,7 +10,7 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/gymbuddy
+    url: jdbc:${DB_URL:postgresql://localhost:5432/gymbuddy}
     username: ${DB_USER}
     password: ${DB_PWD}
     driver-class-name: org.postgresql.Driver
@@ -20,6 +20,16 @@ spring:
   mvc:
     format:
       date-time: iso
+
+mybatis:
+  mapper-locations: "query/queries.xml"
+  configuration:
+    map-underscore-to-camel-case: true
+
+firebase:
+  audience: ${FIREBASE_PROJECT_ID:gymbuddy-b4e20}
+  issuer: ${FIREBASE_ISSUER:https://securetoken.google.com/gymbuddy-b4e20}
+  public-key-provider: ${FIREBASE_KEYS_URL:https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com}
 
 server:
   port: 8080

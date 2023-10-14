@@ -1,6 +1,5 @@
 package com.gymbuddy.training.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,12 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RestExceptionHandler {
 
     @ExceptionHandler(ServiceExpection.class)
-    public ResponseEntity<Object> handleServiceException(final HttpServletRequest request,
-                                                         final ServiceExpection expection) {
+    public ResponseEntity<Object> handleServiceException(final ServiceExpection expection) {
         final Map<String, Object> response = new ConcurrentHashMap<>();
+        response.put("errorCode", String.format("GYM_%03d", expection.getErrorCode()));
         response.put("message", expection.getMessage());
         response.put("timestamp:", Errors.getByCode(expection.getErrorCode()).getTimeStamp());
-        log.error("Exception occured at: {}", request.getRequestURL());
         return new ResponseEntity<>(response, expection.getStatusCode());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleTransactionSystemException(Exception exception) {
+        return handleServiceException(new ServiceExpection(Errors.UNEXPECTED_ERROR, exception.getMessage()));
     }
 }
