@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutStepResponse {
+    Long stepId;
     Integer stepNumber;
     String stepName;
     String details;

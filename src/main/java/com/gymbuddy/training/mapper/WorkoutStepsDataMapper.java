@@ -15,6 +15,7 @@ import java.util.List;
 public interface WorkoutStepsDataMapper {
 
     @Named("workoutStepDto")
+    @Mapping(target = "stepId", source = "workoutStepId.stepId")
     WorkoutStepResponse toWorkoutStepDto(final WorkoutStep workoutStep);
 
     @IterableMapping(qualifiedByName = "workoutStepDto")
