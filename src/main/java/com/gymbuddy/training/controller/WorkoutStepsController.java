@@ -36,13 +36,13 @@ public class WorkoutStepsController {
         return ResponseEntity.ok(steps);
     }
 
-    @GetMapping("/{stepNumber}")
+    @GetMapping("/{stepId}")
     @Operation(summary = "Gets a step associated with the selected workout", security = {@SecurityRequirement(name = "token")})
     public ResponseEntity<WorkoutStepResponse> getStep(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                                        @PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                                       @PathVariable("stepNumber") @NotNull @Valid final Long stepNumber) {
-        log.info("Endpoint::getStep invoked. workoutId: {}, stepNumber: {}", workoutId, stepNumber);
-        final WorkoutStepResponse step = workoutStepService.getStep(workoutId, stepNumber);
+                                                       @PathVariable("stepId") @NotNull @Valid final Long stepId) {
+        log.info("Endpoint::getStep invoked. workoutId: {}, stepId: {}", workoutId, stepId);
+        final WorkoutStepResponse step = workoutStepService.getStep(workoutId, stepId);
         return ResponseEntity.ok(step);
     }
 
@@ -56,25 +56,25 @@ public class WorkoutStepsController {
         return ResponseEntity.ok(step);
     }
 
-    @PutMapping("/{stepNumber}")
+    @PutMapping("/{stepId}")
     @Operation(summary = "Edits an existing step", security = {@SecurityRequirement(name = "token")})
     public ResponseEntity<WorkoutStepResponse> editStep(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                                         @PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                                        @PathVariable("stepNumber") @NotNull @Valid final Long stepNumber,
+                                                        @PathVariable("stepId") @NotNull @Valid final Long stepId,
                                                         @RequestBody @Valid final ChangeWorkoutStepRequest editableWorkoutStepDto) {
         log.info("Endpoint::editStep invoked. " +
-                "workoutId: {}, stepNumber: {}, editableWorkoutStepDto: {}", workoutId, stepNumber, editableWorkoutStepDto);
-        final WorkoutStepResponse step = workoutStepService.editStep(workoutId, stepNumber, editableWorkoutStepDto);
+                "workoutId: {}, stepId: {}, editableWorkoutStepDto: {}", workoutId, stepId, editableWorkoutStepDto);
+        final WorkoutStepResponse step = workoutStepService.editStep(workoutId, stepId, editableWorkoutStepDto);
         return ResponseEntity.ok(step);
     }
 
-    @DeleteMapping("/{stepNumber}")
+    @DeleteMapping("/{stepId}")
     @Operation(summary = "Deletes a step from a workout", security = {@SecurityRequirement(name = "token")})
     public ResponseEntity<Void> deleteStep(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwtToken,
                                            @PathVariable("workoutId") @NotNull @Valid final Long workoutId,
-                                           @PathVariable("stepNumber") @NotNull @Valid final Long stepNumber) {
-        log.info("Endpoint::deleteStep invoked. workoutId: {}, stepId: {}", workoutId, stepNumber);
-        workoutStepService.deleteStep(workoutId, stepNumber);
+                                           @PathVariable("stepId") @NotNull @Valid final Long stepId) {
+        log.info("Endpoint::deleteStep invoked. workoutId: {}, stepId: {}", workoutId, stepId);
+        workoutStepService.deleteStep(workoutId, stepId);
         return ResponseEntity.ok().build();
     }
 }

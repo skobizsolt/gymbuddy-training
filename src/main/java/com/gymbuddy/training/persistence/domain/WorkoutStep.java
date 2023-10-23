@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutStep {
     @EmbeddedId WorkoutStepId workoutStepId;
-    @NotNull Integer stepNumber;
+    @NotNull Integer stepPosition;
     @NotNull String stepName;
     @Column(columnDefinition = "TEXT")
     String details;

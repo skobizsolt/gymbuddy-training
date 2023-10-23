@@ -12,16 +12,16 @@ public interface WorkoutStepService {
     List<WorkoutStepResponse> getAllSteps(Long workoutId);
 
     WorkoutStepResponse getStep(Long workoutId,
-                                Long stepNumber);
+                                Long stepId);
 
     WorkoutStepResponse addStep(Long workoutId,
                                 ChangeWorkoutStepRequest creatableWorkoutStepDto);
 
 
     WorkoutStepResponse editStep(Long workoutId,
-                                 Long stepNumber,
+                                 Long stepId,
                                  ChangeWorkoutStepRequest editableWorkoutStepDto);
 
     void deleteStep(Long workoutId,
-                    Long stepNumber);
+                    Long stepId);
 }

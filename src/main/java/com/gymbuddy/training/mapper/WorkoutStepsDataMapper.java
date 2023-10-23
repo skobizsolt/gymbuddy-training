@@ -22,10 +22,10 @@ public interface WorkoutStepsDataMapper {
     List<WorkoutStepResponse> toWorkoutsDto(final List<WorkoutStep> workoutSteps);
 
     @Mapping(target = "workoutStepId.workoutId", source = "workoutId")
-    @Mapping(target = "workoutStepId.stepId", source = "stepNumber")
+    @Mapping(target = "workoutStepId.stepId", source = "stepPosition")
     WorkoutStep toWorkoutStep(final ChangeWorkoutStepRequest creatableWorkoutStepDto,
                               final Long workoutId,
-                              final Integer stepNumber);
+                              final Integer stepPosition);
 
     void modifyEntity(@MappingTarget final WorkoutStep workoutStepEntity,
                       final ChangeWorkoutStepRequest editableWorkoutStepDto);

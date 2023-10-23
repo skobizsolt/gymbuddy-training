@@ -64,7 +64,7 @@ public class DefaultWorkoutService implements WorkoutService {
     public void deleteWorkout(final Long workoutId) {
         final Workout workout = getWorkoutById(workoutId);
         final List<WorkoutStepResponse> steps = workoutStepService.getAllSteps(workoutId);
-        steps.forEach(step -> workoutStepService.deleteStep(workoutId, Long.valueOf(step.getStepNumber())));
+        steps.forEach(step -> workoutStepService.deleteStep(workoutId, Long.valueOf(step.getStepPosition())));
         workoutRepository.delete(workout);
 
     }

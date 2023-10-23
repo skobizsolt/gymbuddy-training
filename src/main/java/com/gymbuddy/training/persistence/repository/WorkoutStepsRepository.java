@@ -20,10 +20,10 @@ public interface WorkoutStepsRepository extends JpaRepository<WorkoutStep, Long>
 
     @Query(value = "SELECT * FROM workout_step s" +
             " WHERE s.workout_id = :workoutId" +
-            " AND s.step_number = :stepNumber", nativeQuery = true)
-    Optional<WorkoutStep> findWorkoutStepByWorkoutIdAndStepNumber(Long workoutId, Long stepNumber);
+            " AND s.step_id = :stepId", nativeQuery = true)
+    Optional<WorkoutStep> findWorkoutStepByPrimaryKeys(Long workoutId, Long stepId);
 
-    @Query(value = "SELECT MAX(step_number) + 1 FROM workout_step s" +
+    @Query(value = "SELECT MAX(step_position) + 1 FROM workout_step s" +
             " WHERE s.workout_id = :workoutId", nativeQuery = true)
-    Optional<Integer> getNextStepNumber(Long workoutId);
+    Optional<Integer> getNextStepPositionInWorkout(Long workoutId);
 }
