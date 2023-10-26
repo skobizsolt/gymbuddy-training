@@ -1,9 +1,6 @@
 package com.gymbuddy.training.persistence.domain;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,8 +16,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkoutStep {
     @EmbeddedId WorkoutStepId workoutStepId;
-    @NotNull Integer stepNumber;
+    @NotNull Integer stepPosition;
     @NotNull String stepName;
+    @Column(columnDefinition = "TEXT")
     String details;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutType workoutType;

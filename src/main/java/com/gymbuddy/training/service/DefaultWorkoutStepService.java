@@ -32,16 +32,16 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     }
 
     @Override
-    public WorkoutStepResponse getStep(final Long workoutId, final Long stepNumber) {
-        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
+    public WorkoutStepResponse getStep(final Long workoutId, final Long stepId) {
+        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepId);
         return workoutStepsDataMapper.toWorkoutStepDto(workoutStep);
     }
 
     @Override
     public WorkoutStepResponse addStep(final Long workoutId, final ChangeWorkoutStepRequest creatableWorkoutStepDto) {
-        final Integer stepNumber = workoutStepsRepository.getNextStepNumber(workoutId).orElse(1);
+        final Integer lastStepPosition = workoutStepsRepository.getNextStepPositionInWorkout(workoutId).orElse(1);
         final WorkoutStep workoutStep =
-                workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, stepNumber);
+                workoutStepsDataMapper.toWorkoutStep(creatableWorkoutStepDto, workoutId, lastStepPosition);
         log.info("Creating: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
         workoutStepsRepository.save(workoutStep);
         log.info("Created: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
@@ -49,8 +49,8 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     }
 
     @Override
-    public WorkoutStepResponse editStep(final Long workoutId, final Long stepNumber, final ChangeWorkoutStepRequest editableWorkoutStepDto) {
-        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
+    public WorkoutStepResponse editStep(final Long workoutId, final Long stepId, final ChangeWorkoutStepRequest editableWorkoutStepDto) {
+        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepId);
         log.info("Editing: WorkoutStep::Step: {}", workoutStep.getWorkoutStepId());
         workoutStepsDataMapper.modifyEntity(workoutStep, editableWorkoutStepDto);
         workoutStepsRepository.save(workoutStep);
@@ -59,15 +59,15 @@ public class DefaultWorkoutStepService implements WorkoutStepService {
     }
 
     @Override
-    public void deleteStep(final Long workoutId, final Long stepNumber) {
-        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepNumber);
-        log.debug("Deleting: WorkoutStep::Step: {}", stepNumber);
+    public void deleteStep(final Long workoutId, final Long stepId) {
+        final WorkoutStep workoutStep = getWorkoutStep(workoutId, stepId);
+        log.debug("Deleting: WorkoutStep::Step: {}", stepId);
         workoutStepsRepository.delete(workoutStep);
     }
 
     private WorkoutStep getWorkoutStep(final Long workoutId,
-                                       final Long stepNumber) {
-        return workoutStepsRepository.findWorkoutStepByWorkoutIdAndStepNumber(workoutId, stepNumber)
-                .orElseThrow(() -> new ServiceExpection(WORKOUT_STEP_NOT_FOUND, "Step: " + stepNumber));
+                                       final Long stepId) {
+        return workoutStepsRepository.findWorkoutStepByPrimaryKeys(workoutId, stepId)
+                .orElseThrow(() -> new ServiceExpection(WORKOUT_STEP_NOT_FOUND, "Step: " + stepId));
     }
 }

@@ -22,6 +22,7 @@ public class Workout {
     Long workoutId;
     @NotNull String userId;
     @NotNull String title;
+    @Column(columnDefinition = "TEXT")
     String description;
     @Enumerated(value = EnumType.STRING)
     @NotNull WorkoutCategory category;
