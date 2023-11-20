@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>com.gymbuddy</groupId>
 			<artifactId>gymbuddy-auth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
