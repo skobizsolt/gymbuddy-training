@@ -32,4 +32,4 @@ firebase:
   public-key-provider: ${FIREBASE_KEYS_URL:https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com}
 
 server:
-  port: 8080
+  port: ${PORT:8080}
