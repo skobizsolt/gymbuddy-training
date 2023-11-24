@@ -3,7 +3,7 @@ spring:
     name: gymbuddy-training
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
       show_sql: true
       format_sql: true
     defer-datasource-initialization: true
